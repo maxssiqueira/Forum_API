@@ -1,4 +1,4 @@
-package br.com.invillia.plataformacursoapi.domain.dto;
+package br.com.invillia.plataformacursoapi.domain.controller.dto;
 
 import br.com.invillia.plataformacursoapi.domain.model.User;
 
