@@ -29,15 +29,8 @@ public class UserController {
 
 
     @GetMapping
-    public List<UserDto> listar() {
-        if (userRepository.findAll().isEmpty()) {
-            return (List<UserDto>) ResponseEntity.noContent();
-        }
-        List<UserDto> listDto = new ArrayList<>();
-        for(User user:userRepository.findAll()){
-            listDto.add(new UserDto(user));
-        }
-        return listDto;
+    public ResponseEntity<?> getAllUsers() {
+        return userService.searchAllUsers();
     }
     
     @PostMapping
@@ -48,29 +41,13 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Valid UpdateUserForm form){
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()){
-            User user = form.update(id, userRepository);
-            return ResponseEntity.ok(new UserDto(user));
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<?> putUser(@PathVariable Long id, @RequestBody @Valid UpdateUserForm form){
+        return userService.updateUser(id, form);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> delete (@PathVariable Long id){
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()){
-            userRepository.deleteById(id);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<?> deleteUser (@PathVariable Long id){
+       return userService.removeUser(id);
     }
-
-
-
-
-
-
 }
